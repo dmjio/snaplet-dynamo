@@ -110,10 +110,10 @@ dynamoDBInitConf policy = makeSnaplet "dynamo" "DynamoDB snaplet" Nothing $ do
                                     
           , dynamoBackOff   = fromMaybe defaultDynamoBackoffPolicy policy
           , dynamoIsDev     = case cDev of
-                                Nothing -> False
+                                Nothing -> True
                                 Just x  ->
                                     case readMaybe x :: Maybe Bool of
-                                      Nothing -> False
+                                      Nothing -> True
                                       Just y -> y
           , dynamoDebug     = case cDebug of
                                 Nothing -> False
