@@ -89,18 +89,19 @@ dynamoDBInitConf
     :: Maybe RetryPolicy
     -> SnapletInit b DynamoDB
 dynamoDBInitConf policy = makeSnaplet "dynamo" "DynamoDB snaplet" Nothing $ do
-    config <- getSnapletUserConfig
+    conf <- getSnapletUserConfig
     dynamoConfig <- liftIO $ do
-        cPublic <- C.lookup config "public"
-        cSecret <- C.lookup config "secret"
-        cRegion <- C.lookup config "region"
-        cDev    <- C.lookup config "dev"
-        cDebug  <- C.lookup config "debug"
+        cPublic <- C.lookup conf "public"
+        cSecret <- C.lookup conf "secret"
+        cRegion <- C.lookup conf "region"
+        cDev    <- C.lookup conf "dev"
+        cDebug  <- C.lookup conf "debug"
         mgr <- newManager (opensslManagerSettings context)
         return DynamoConfig { 
             dynamoPublicKey = PublicKey $ fromMaybe "public" cPublic
           , dynamoSecretKey = SecretKey $ fromMaybe "secret" cSecret
           , dynamoManager   = mgr
+          , dynamoUrl       = Nothing
           , dynamoRegion    = case cRegion of
                                 Nothing -> UsEast1
                                 Just y  ->
