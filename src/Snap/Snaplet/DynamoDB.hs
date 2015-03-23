@@ -28,7 +28,7 @@ import Control.Lens                ( makeLenses
 import Control.Retry               ( RetryPolicy )
 import qualified Data.Configurator as C
 
-import Network.HTTP.Client         ( newManager, ManagerSettings(..) )
+import Network.HTTP.Client         ( newManager )
 import Network.HTTP.Client.OpenSSL ( opensslManagerSettings )
 import OpenSSL.Session             ( context )
 import Snap                        ( MonadState
@@ -96,17 +96,7 @@ dynamoDBInitConf policy = makeSnaplet "dynamo" "DynamoDB snaplet" Nothing $ do
         cRegion <- C.lookup conf "region"
         cDev    <- C.lookup conf "dev"
         cDebug  <- C.lookup conf "debug"
-        cConn   <- C.lookup conf "conns"
-        cTimeout <- C.lookup conf "timeout"
-        mgr <- newManager ((opensslManagerSettings context) {
-                      managerConnCount = fromMaybe 10 cConn
-                           -- http-client default is 10
-                    , managerResponseTimeout =
-                        Just $ if isNothing cTimeout
-                               then 30
-                               else let Just x = cTimeout in x
-                           -- http-client default is 10
-                    })
+        mgr <- newManager (opensslManagerSettings context)
         return DynamoConfig { 
             dynamoPublicKey = PublicKey $ fromMaybe "public" cPublic
           , dynamoSecretKey = SecretKey $ fromMaybe "secret" cSecret
