@@ -22,16 +22,15 @@ library
   exposed-modules:     Snap.Snaplet.DynamoDB
   hs-source-dirs:      src
   default-language:    Haskell2010
-  build-depends:       HsOpenSSL >= 0.11
-                     , aws-general >= 0.1.1
-                     , base >=4.6 && <4.8
-                     , configurator
-                     , dynamo
-                     , http-client >= 0.4.6.1
-                     , http-client-openssl
-                     , lens
-                     , network
-                     , retry >= 0.5.1
-                     , snap
-                     , text
-                     , transformers
+  build-depends:       aws-general     ==0.2.1
+                     , base            ==4.7.0.2
+                     , configurator    ==0.3.0.0
+                     , dynamo          ==0.1.0.0
+                     , http-client     ==0.4.9
+                     , http-client-tls ==0.2.2
+                     , io-streams-http ==0.2.0.2
+                     , lens            ==4.5
+                     , retry           ==0.6
+                     , snap            ==0.13.3.2
+                     , text            ==1.2.0.4
+                     , transformers    ==0.4.3.0

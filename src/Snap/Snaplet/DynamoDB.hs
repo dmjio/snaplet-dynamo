@@ -29,8 +29,7 @@ import Control.Retry               ( RetryPolicy )
 import qualified Data.Configurator as C
 
 import Network.HTTP.Client         ( newManager )
-import Network.HTTP.Client.OpenSSL ( opensslManagerSettings )
-import OpenSSL.Session             ( context )
+import Network.HTTP.Client.TLS     ( tlsManagerSettings )
 import Snap                        ( MonadState
                                    , MonadIO
                                    , gets
@@ -96,7 +95,7 @@ dynamoDBInitConf policy = makeSnaplet "dynamo" "DynamoDB snaplet" Nothing $ do
         cRegion <- C.lookup conf "region"
         cDev    <- C.lookup conf "dev"
         cDebug  <- C.lookup conf "debug"
-        mgr <- newManager (opensslManagerSettings context)
+        mgr <- newManager tlsManagerSettings
         return DynamoConfig { 
             dynamoPublicKey = PublicKey $ fromMaybe "public" cPublic
           , dynamoSecretKey = SecretKey $ fromMaybe "secret" cSecret
